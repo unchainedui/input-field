@@ -1,0 +1,138 @@
+$input-font-family: $uiFontFamily;
+$input-font-size: $uiFontSize;
+$input-height: calc($uiGrid * 2);
+$input-max-width: calc($uiGrid * 15);
+$input-bg-color: $uiBgColor;
+$input-color: $uiColor;
+$input-bg-focus-color: $uiBgFocusColor;
+$input-focus-color: $uiFocusColor;
+$input-label-color: $uiColor;
+$input-error-color: $uiErrorColor;
+$input-uppercase: $uiInputUppercase;
+$input-hover: $uiInputHover;
+$input-transition: $uiBaseTransition;
+$input-transition-duration: $uiBaseTransitionDuration;
+
+.input {
+  position: relative;
+  display: block;
+  height: $input-height;
+  width: 100%;
+  max-width: $input-max-width;
+  font: $input-font-size $input-font-family;
+  text-align: center;
+  cursor: text;
+  margin-bottom: 1px;
+
+  input, span, em {
+    transition: all $input-transition-duration $input-transition;
+  }
+
+  input {
+    font: $input-font-size $input-font-family;
+    background: $input-bg-color;
+    color: $input-color;
+    height: $input-height;
+    width: 100%;
+    border: none;
+    outline: none;
+    text-align: center;
+    padding: calc($input-height/8) calc($input-height/4) 0;
+    box-sizing: border-box;
+  }
+
+  span {
+    top: 0;
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    transform-origin: 50% 0;
+
+    color: $input-color;
+
+    @if $input-uppercase == true {
+      text-transform: uppercase;
+      letter-spacing: 0.02em;
+    }
+
+    i {
+      font-style: normal;
+      opacity: 0.5;
+    }
+  }
+
+  a {
+    position: absolute;
+  }
+
+  em {
+    position: absolute;
+    top: 0;
+    left: 0;
+    background: $input-error-color;
+    color: $input-color;
+    height: 100%;
+    width: 100%;
+    line-height: $input-height;
+    box-sizing: border-box;
+    padding: 0 calc($input-height/4);
+    font-style: normal;
+
+    /* fade out */
+    visibility:hidden;
+    opacity:0;
+    transition:
+      visibility 0s $input-transition $input-transition-duration,
+      all $input-transition-duration $input-transition 0;
+  }
+
+  &.input-message em {
+    /* fade in */
+    visibility:visible;
+    opacity:1;
+    transition:
+      visibility 0s $input-transition $input-transition-duration,
+      all $input-transition-duration $input-transition 0;
+  }
+
+  @if $input-hover == true {
+    &:hover {
+      input {
+        color: $input-focus-color;
+        background: color($input-bg-color blend($input-bg-focus-color 50%));
+      }
+      span {
+        color: $input-focus-color;
+      }
+    }
+  }
+
+  input:focus {
+    background: $input-bg-focus-color;
+    color: $input-focus-color;
+  }
+
+  &.input-value span, input:focus + span {
+    transform: scale(0.6) translateY(-20%) !important;
+  }
+
+  &.input-value span {
+    color: color($input-color blend($input-bg-color 35%));
+  }
+
+  input:focus + span {
+    color: $input-label-color;
+  }
+
+  &.error input {
+    background: $input-error-color !important;
+    color: $input-bg-color !important;
+  }
+
+  input:disabled {
+    color: color($input-color blend($input-bg-color 50%));
+  }
+}

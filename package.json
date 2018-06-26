@@ -1,0 +1,48 @@
+{
+  "name": "uc-input-field",
+  "version": "1.0.0",
+  "description": "Input Field UI Component",
+  "main": "index.js",
+  "scripts": {
+    "build": "fuller -v",
+    "dev": "fuller -vwz"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unchainedui/input-field.git"
+  },
+  "keywords": [
+    "unchained",
+    "ui",
+    "browser",
+    "input",
+    "field",
+    "kiss"
+  ],
+  "author": "Alexey Novikov <v@2dubs.com> (http://2dubs.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/unchainedui/input-field/issues"
+  },
+  "homepage": "https://github.com/unchainedui/input-field#readme",
+  "devDependencies": {
+    "autoprefixer": "^8.6.3",
+    "fuller": "^0.3.3",
+    "fuller-dst-file": "^0.3.1",
+    "fuller-postcss": "^0.3.0",
+    "fuller-src-file": "^0.3.1",
+    "fuller-src-rollup": "^0.3.0",
+    "postcss-calc": "^6.0.1",
+    "postcss-color-function": "^4.0.1",
+    "postcss-conditionals": "^2.1.0",
+    "postcss-import": "^11.1.0",
+    "postcss-mixins": "^6.2.0",
+    "postcss-nested": "^3.0.0",
+    "postcss-simple-vars": "^4.1.0"
+  },
+  "dependencies": {
+    "uc-compose": "^1.0.0",
+    "uc-dom": "^1.2.0",
+    "uc-input": "^1.0.0"
+  }
+}
