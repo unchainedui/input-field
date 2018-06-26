@@ -2,6 +2,9 @@
 
 ## Input Field UI Component
 
+[![NPM Version](https://img.shields.io/npm/v/uc-input-field.svg?style=flat-square)](https://www.npmjs.com/package/uc-input-field)
+[![NPM Downloads](https://img.shields.io/npm/dt/uc-input-field.svg?style=flat-square)](https://www.npmjs.com/package/uc-input-field)
+
 ### Usage
 
 ```js
@@ -27,6 +30,7 @@ Constructor options:
 * el – HTLMElement, parse all the information from the DOM element
 * **title** — string, title of the input
 * value — string, initial value
+* type – string, default text. HTML input type
 * limit — number, the text limit
 * debounce – number, default 500ms. Debounce onChange calls
 * onChange — function, callback will be called when value is changed
