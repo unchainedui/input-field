@@ -8,9 +8,9 @@
 ### Usage
 
 ```js
-import input from 'uc-input'
+import Input from 'uc-input';
 
-const elDisplay = get('#display')
+const elDisplay = get('#display');
 
 const input = new Input({
   title: 'test field',
