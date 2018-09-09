@@ -9,7 +9,7 @@ module.exports = {
   uiBgColor: '#000',
   uiColor: '#fff',
   uiErrorColor: '#D52917',
-  uiBgFocusColor: '#111',
+  uiBgFocusColor: '#222',
   uiFocusColor: '#ddd',
   uiActiveColor: '#000',
 
