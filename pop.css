@@ -1,0 +1,31 @@
+$input-pop-transition: $uiBaseTransition;
+$input-pop-transition-duration: $uiBaseTransitionDuration;
+
+.input-pop {
+  position: absolute;
+  width: 100%;
+  background: $input-bg-color;
+
+  visibility:hidden;
+    opacity:0;
+    transition:
+      visibility 0s $input-pop-transition $input-pop-transition-duration,
+      all $input-pop-transition-duration $input-pop-transition 0s;
+}
+
+.input-pop-up {
+  bottom: calc(-$input-height + 1px);
+}
+
+.input-pop-down {
+  top: calc($input-height + 1px);
+}
+
+.input-pop-active .input-pop {
+  visibility:visible;
+  opacity:1;
+  transition:
+    visibility 0s $input-pop-transition $input-pop-transition-duration,
+    all $input-pop-transition-duration $input-pop-transition 0s;
+}
+

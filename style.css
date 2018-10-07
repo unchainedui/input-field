@@ -24,8 +24,10 @@ $input-transition-duration: $uiBaseTransitionDuration;
   cursor: text;
   margin-bottom: 1px;
 
-  input, span, em {
-    transition: all $input-transition-duration $input-transition;
+  & > {
+    input, span, em {
+      transition: all $input-transition-duration $input-transition;
+    }
   }
 
   input {
@@ -41,7 +43,7 @@ $input-transition-duration: $uiBaseTransitionDuration;
     box-sizing: border-box;
   }
 
-  span {
+  & > span {
     top: 0;
     position: absolute;
     display: flex;
@@ -64,11 +66,7 @@ $input-transition-duration: $uiBaseTransitionDuration;
     }
   }
 
-  a {
-    position: absolute;
-  }
-
-  em {
+  & > em {
     position: absolute;
     top: 0;
     left: 0;
@@ -91,7 +89,7 @@ $input-transition-duration: $uiBaseTransitionDuration;
       all $input-transition-duration $input-transition 0;
   }
 
-  &.input-message em {
+  &.input-message > em {
     /* fade in */
     visibility:visible;
     opacity:1;
@@ -101,7 +99,7 @@ $input-transition-duration: $uiBaseTransitionDuration;
   }
 
   @if $input-hover == true {
-    &:hover {
+    &:hover > {
       input {
         color: $input-focus-color;
         background: color($input-bg-color blend($input-bg-focus-color 50%));
@@ -117,11 +115,11 @@ $input-transition-duration: $uiBaseTransitionDuration;
     color: $input-focus-color;
   }
 
-  &.input-value span, input:focus + span {
+  &.input-value > span, input:focus + span {
     transform: scale(0.6) translateY(-20%) !important;
   }
 
-  &.input-value span {
+  &.input-value > span {
     color: color($input-color blend($input-bg-color 35%));
   }
 

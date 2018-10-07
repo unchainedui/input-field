@@ -1,5 +1,7 @@
+const grid = 20;
+
 module.exports = {
-  uiGrid: '20px',
+  uiGrid: `${grid}px`,
   uiFontFamily: 'sans-serif',
   uiFontSize: '16px',
   uiBaseTransition: 'cubic-bezier(0.66, 0, 0.07, 1)',

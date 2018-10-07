@@ -755,8 +755,8 @@
       .split('')
       .map(char => charMap[char] || char)
       .join('')
-      .replace(' ', '-')
-      .replace(/[^-a-z0-9]{1,60}/, '');
+      .replace(/ /ig, '-')
+      .replace(/[^-a-z0-9]{1,60}/ig, '');
   }
 
   var input = {
@@ -788,13 +788,12 @@
       // interface, implement this in your class
     },
 
-    setup: function(opts) {
+    addInput: function(opts) {
       this.debouncedUpdate = debounce(this.update, opts.debounce || 500);
 
       let isMeta = false;
       this._value = this.getValue();
       this.limit = opts.limit;
-      this.events = {};
       this.events.click = on$1(this.el, 'click', e => e.stopPropagation());
       this.events.focus = on$1(this.input, 'focus', () => this.removeClass('input-message'));
       this.events.blur = on$1(this.input, 'blur', () => {
@@ -803,7 +802,6 @@
         this.onKeyUp();
       });
       this.events.paste = on$1(this.input, 'paste', e => this.onPaste(e));
-      this.blur();
       this.events.keydown = on$1(this.input, 'keydown', e => {
         isMeta = e.altKey || e.ctrlKey || e.metaKey;
       });
@@ -815,6 +813,7 @@
       });
 
       opts.placeholder && this.setPlaceholder(opts.placeholder);
+      this.toggleClass('input-value', this._value !== '');
     },
 
     onKeyUp: function() {
@@ -837,7 +836,7 @@
     },
 
     onPaste: function(e) {
-      const str = e.originalEvent.clipboardData.getData('text/plain');
+      const str = e.clipboardData.getData('text/plain');
       const pos = this.getCarret();
       document.execCommand('insertText', false, str);
       e.preventDefault();
@@ -853,7 +852,7 @@
 
     update: function(val, silent) {
       this.removeClass('error');
-      !silent && this.didUpdate && this.didUpdate(val);
+      !silent && this.onChange && this.onChange(val);
     },
 
     focus: function() {
@@ -867,7 +866,7 @@
       return this;
     },
 
-    value: function(val, dontUpdate) {
+    value: function(val, silent) {
       if (val === undefined) {
         return this.getValue();
       }
@@ -877,7 +876,7 @@
 
       if (val !== value) {
         this.setValue(val);
-        if (dontUpdate) {
+        if (silent) {
           this.toggleClass('input-value', val !== '');
         } else {
           this.update(val);
@@ -894,7 +893,7 @@
       return off$1.apply(null, [ this.input ].concat(args));
     },
 
-    destroy: function() {
+    removeInput: function() {
       this.removePlaceholder && this.removePlaceholder();
       this.removeClass('input-msg', 'input-value');
 
@@ -982,11 +981,74 @@
     }
   };
 
+  var field = {
+    setValue: function(val) {
+      this.input.value = val;
+    },
+
+    getValue: function() {
+      return this.input.value;
+    },
+
+    render: function(opts) {
+      return create('label.input', `
+      <input
+        type="${opts.type || 'text'}"
+        ${(opts.name ? `name="${opts.name}" ` : '')}
+        ${(opts.value ? `value="${opts.value}" ` : '')}
+      >
+      <span>${opts.title}</span>
+      <em></em>`
+      );
+    },
+
+    addField: function(opts) {
+      this.el = opts.el || this.render(opts);
+      this.input = this.find('input').item(0);
+      this.elMessage = this.find('em').item(0);
+    },
+
+    removeField: function() {
+      clearTimeout(this.errorTimeout);
+      remove(this.el);
+      delete this.el;
+      delete this.elMessage;
+    },
+
+    getCarret: function() {
+      return this.input.selectionEnd;
+    },
+
+    setCarret: function(pos) {
+      this.input.setSelectionRange(pos, pos);
+    },
+
+    resetCarret: function(toBegin) {
+      this.input.focus();
+      const pos = toBegin ? 0 : this.input.value.length;
+      this.input.setSelectionRange(pos, pos);
+    },
+
+    error: function(msg) {
+      if (msg) {
+        this.addClass('input-message');
+        this.elMessage.textContent = msg;
+      }
+
+      this.errorTimeout = addDelayRemoveClass(this.el, 'error', 600);
+    },
+
+    active: function(state) {
+      this.input.disabled = !state;
+    }
+  };
+
   const Input = function(opts) {
-    this.didUpdate = opts.onChange;
-    this.el = opts.el || this.render(opts);
-    this.input = this.find('input').item(0);
-    this.setup(opts);
+    this.onChange = opts.onChange;
+
+    this.events = {};
+    this.addField(opts);
+    this.addInput(opts);
 
     this.transforms = [];
     this.pushTransform(opts);
@@ -996,61 +1058,11 @@
     html,
     transform,
     input,
+    field,
     {
-      setValue: function(val) {
-        this.input.value = val;
-      },
-
-      getValue: function() {
-        return this.input.value;
-      },
-
-      render: function(opts) {
-        return create('label.input', `
-        <input
-          type="${opts.type || 'text'}"
-          ${(opts.name ? `name="${opts.name}" ` : '')}
-          ${(opts.value ? `value="${opts.value}" ` : '')}
-        >
-        <span>${opts.title}</span>
-        <em></em>`
-        );
-      },
-
-      getCarret: function() {
-        return this.input.selectionEnd;
-      },
-
-      setCarret: function(pos) {
-        this.input.setSelectionRange(pos, pos);
-      },
-
-      resetCarret: function(toBegin) {
-        this.input.focus();
-        const pos = toBegin ? 0 : this.input.value.length;
-        this.input.setSelectionRange(pos, pos);
-      },
-
-      error: function(msg) {
-        if (msg) {
-          this.addClass('input-message')
-            .find('em')
-            .item(0)
-            .textContent = msg;
-        }
-
-        this.errorTimeout = addDelayRemoveClass(this.el, 'error', 600);
-      },
-
-      active: function(state) {
-        this.input.disabled = !state;
-      },
-
       remove: function() {
-        clearTimeout(this.errorTimeout);
-        this.destroy();
-        remove(this.el);
-        delete this.el;
+        this.removeInput();
+        this.removeField();
       }
     }
   );

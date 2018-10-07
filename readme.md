@@ -71,6 +71,10 @@ Adds the transform function to the end of transformation chain.
 
 Adds the transform function to the begining of transformation chain.
 
+## Components
+
+This package also provides the `field` and `pop` mixins. It makes easy to create custom input fields. Check the [uc-input-field-date](https://github.com/unchainedui/input-field-date/) implementation for details.
+
 License MIT
 
 © velocityzen
